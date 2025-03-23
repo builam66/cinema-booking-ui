@@ -1,32 +1,20 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Layout from './components/Layout';
-import Home from './routes/Home';
-import About from './routes/About';
-import NotFound from './routes/NotFound';
+import { Provider } from "react-redux";
+import { store } from "@/stores/store";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "@/features/home";
+import NotFound from "@/features/common/not-found";
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Layout />,
-    children: [
-      {
-        index: true,
-        element: <Home />,
-      },
-      {
-        path: 'about',
-        element: <About />,
-      },
-      {
-        path: '*',
-        element: <NotFound />,
-      },
-    ],
-  },
-]);
-
-function App() {
-  return <RouterProvider router={router} />;
-}
+const App = () => {
+  return (
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </Provider>
+  );
+};
 
 export default App;

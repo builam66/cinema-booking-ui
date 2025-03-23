@@ -12,7 +12,6 @@
       "@/*": ["./src/*"]
     },
     "esModuleInterop": true,
-    "verbatimModuleSyntax": true,
     "noEmit": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
@@ -30,10 +29,6 @@
     "noFallthroughCasesInSwitch": false,
   },
   "include": [
-    //    "src",
-    "**/*",
-    "**/.server/**/*",
-    "**/.client/**/*",
-    ".react-router/types/**/*"
+    "src",
   ]
 }
