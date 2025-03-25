@@ -5,6 +5,7 @@ import { Button } from '@/components/button';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import MovieCarousel from "./components/movie-carousel";
+import MovieGrid from "@/features/movies/components/movie-grid";
 
 const Home = () => {
   const featuredMovies = mockMovies.slice(-3);
@@ -30,6 +31,7 @@ const Home = () => {
             </div>
 
             {/* Movie Grid */}
+            <MovieGrid movies={nowShowingMovies} />
           </div>
         </section>
 
