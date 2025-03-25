@@ -4,15 +4,17 @@ import { mockMovies } from '@/testing/mock-data';
 import { Button } from '@/components/button';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import MovieCarousel from "./components/movie-carousel";
 
 const Home = () => {
-  const featuredMovies = mockMovies.slice(0, 3);
+  const featuredMovies = mockMovies.slice(-3);
   const nowShowingMovies = mockMovies.slice(0, 4);
 
   return (
     <AppLayout>
-      <div className="pt-16">
+      <div className="pt-0">
         {/* Hero Carousel */}
+        <MovieCarousel movies={featuredMovies} />
 
         {/* Now Showing Section */}
         <section className="section">
