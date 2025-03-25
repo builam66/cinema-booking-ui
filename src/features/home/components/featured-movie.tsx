@@ -51,11 +51,14 @@ const FeaturedMovie: React.FC<FeaturedMovieProps> = ({ movie }) => {
             {/* Movie details */}
             <div className="flex-1 text-white">
               <div className="mb-2 flex items-center space-x-3">
-                <Badge className="bg-primary/90 hover:bg-primary border-none text-xs py-1">FEATURED</Badge>
+                <Badge className="bg-primary/90 hover:bg-primary border-none text-sm py-1">FEATURED</Badge>
 
+                {/* Rating badge */}
                 <div className="flex items-center">
-                  <Star size={16} className="text-yellow-400 mr-1" />
-                  <span className="text-sm font-medium">{movie.rating.toFixed(1)}</span>
+                  <Badge variant="secondary" className="bg-white/90 text-black font-medium">
+                    <Star size={10} className="text-yellow-400 mr-1" />
+                    <span className="text-sm font-medium">{movie.rating.toFixed(1)}</span>
+                  </Badge>
                 </div>
               </div>
 
@@ -73,12 +76,12 @@ const FeaturedMovie: React.FC<FeaturedMovieProps> = ({ movie }) => {
 
               <div className="flex flex-wrap gap-4 text-sm text-gray-200 mb-5">
                 <div className="flex items-center">
-                  <Clock size={14} className="mr-1.5" />
-                  <span>{formatDuration(movie.duration)}</span>
+                  <Clock size={14} className="mr-1.5" color="gray" />
+                  <span className="text-gray-300">{formatDuration(movie.duration)}</span>
                 </div>
                 <div className="flex items-center">
-                  <Calendar size={14} className="mr-1.5" />
-                  <span>{formatDate(movie.releaseDate)}</span>
+                  <Calendar size={14} className="mr-1.5" color="gray" />
+                  <span className="text-gray-300">{formatDate(movie.releaseDate)}</span>
                 </div>
               </div>
 

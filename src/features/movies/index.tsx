@@ -1,47 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import AppLayout from '@/components/layout/app-layout';
 import MovieGrid from './components/movie-grid';
-import { mockMovies } from '@/testing/mock-data';
 import { Input } from '@/components/input';
 import { Button } from '@/components/button';
 import { Card, CardContent } from '@/components/card';
 import { Search, Filter, X, SlidersHorizontal, Tag } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { fetchMovies } from "@/stores/slices/movieSlice.ts";
+import { AppDispatch, RootState } from "@/stores/store.ts";
+import { useDispatch, useSelector } from "react-redux";
 
 const Movies = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { movies, isLoading } = useSelector((state: RootState) => state.movies);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedGenre, setSelectedGenre] = useState<string>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [filtersVisible, setFiltersVisible] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
   const itemsPerPage = 8;
+
+  useEffect(() => {
+    dispatch(fetchMovies());
+  }, [dispatch]);
 
   // Extract all genres from movies
   const allGenres = Array.from(
-    new Set(mockMovies.flatMap(movie => movie.genre))
+    new Set(movies.flatMap(movie => movie.genre))
   ).sort();
 
-  // Simulate data loading
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Simulate loading when changing filters
-  useEffect(() => {
-    setIsLoading(true);
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [searchQuery, selectedGenre, currentPage]);
-
   // Filter movies based on search query and selected genre
-  const filteredMovies = mockMovies.filter(movie => {
+  const filteredMovies = movies.filter(movie => {
     const matchesSearch = movie.title.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesGenre = selectedGenre === 'all' || movie.genre.includes(selectedGenre);
     return matchesSearch && matchesGenre;

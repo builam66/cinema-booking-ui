@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AppLayout from '@/components/layout/app-layout';
-import { mockMovies } from '@/testing/mock-data';
 import { Button } from '@/components/button';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import MovieCarousel from "./components/movie-carousel";
 import MovieGrid from "@/features/movies/components/movie-grid";
+import { AppDispatch, RootState } from "@/stores/store.ts";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMovies } from "@/stores/slices/movieSlice.ts";
 
 const Home = () => {
-  const featuredMovies = mockMovies.slice(-3);
-  const nowShowingMovies = mockMovies.slice(0, 4);
+  const dispatch = useDispatch<AppDispatch>();
+  const { movies, isLoading } = useSelector((state: RootState) => state.movies);
+
+  useEffect(() => {
+    dispatch(fetchMovies());
+  }, [dispatch]);
+
+  const featuredMovies = movies.slice(0, 3);
+  const nowShowingMovies = movies.slice(0, 4);
 
   return (
     <AppLayout>
@@ -31,7 +40,7 @@ const Home = () => {
             </div>
 
             {/* Movie Grid */}
-            <MovieGrid movies={nowShowingMovies} />
+            <MovieGrid movies={nowShowingMovies} isLoading={isLoading} />
           </div>
         </section>
 
