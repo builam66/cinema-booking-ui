@@ -6,8 +6,8 @@ import { Button } from '@/components/button';
 import { Card, CardContent } from '@/components/card';
 import { Search, Filter, X, SlidersHorizontal, Tag } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { fetchMovies } from "@/stores/slices/movieSlice.ts";
-import { AppDispatch, RootState } from "@/stores/store.ts";
+import { fetchMovies } from "@/stores/slices/movie-slice";
+import { AppDispatch, RootState } from "@/stores";
 import { useDispatch, useSelector } from "react-redux";
 
 const Movies = () => {

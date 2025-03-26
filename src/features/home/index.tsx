@@ -5,9 +5,9 @@ import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import MovieCarousel from "./components/movie-carousel";
 import MovieGrid from "@/features/movies/components/movie-grid";
-import { AppDispatch, RootState } from "@/stores/store.ts";
+import { AppDispatch, RootState } from "@/stores";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMovies } from "@/stores/slices/movieSlice.ts";
+import { fetchMovies } from "@/stores/slices/movie-slice";
 
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
