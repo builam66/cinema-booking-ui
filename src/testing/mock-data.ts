@@ -303,6 +303,16 @@ export const mockShowtimes: Showtime[] = [
   }
 ];
 
+export const getMovies = (): Movie[] => {
+  return mockMovies;
+};
+
+export const searchMovies = (query: string): Movie[] => {
+  return mockMovies.filter(
+    movie => movie.title.toLowerCase().includes(query.toLowerCase())
+  );
+};
+
 export const getMovieById = (id: string): Movie | undefined => {
   return mockMovies.find(movie => movie.id === id);
 };

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { Movie } from '@/types';
-import { mockMovies } from '@/testing/mock-data';
+import { getMovies, getMovieById } from '@/services/movie-service';
 
 interface MovieState {
   movies: Movie[];
@@ -14,10 +14,7 @@ export const fetchMovies = createAsyncThunk(
   'movies/fetchMovies',
   async (_, { rejectWithValue }) => {
     try {
-      // In a real app, this would be an API call
-      await new Promise(resolve => setTimeout(resolve, 500));
-      // Use the movies from mockData directly
-      return mockMovies;
+      return await getMovies();
     } catch (error) {
       return rejectWithValue('Failed to fetch movies');
     }
@@ -29,13 +26,7 @@ export const fetchMovieById = createAsyncThunk(
   'movies/fetchMovieById',
   async (movieId: string, { rejectWithValue }) => {
     try {
-      // In a real app, this would be an API call
-      await new Promise(resolve => setTimeout(resolve, 500));
-      const movie = mockMovies.find(m => m.id === movieId);
-      if (!movie) {
-        throw new Error('Movie not found');
-      }
-      return movie;
+      return await getMovieById(movieId);
     } catch (error) {
       return rejectWithValue('Failed to fetch movie details');
     }
@@ -89,5 +80,4 @@ const movieSlice = createSlice({
 });
 
 export const { clearCurrentMovie } = movieSlice.actions;
-
-export default movieSlice;
+export default movieSlice.reducer;

@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import movieSlice from './slices/movie-slice';
+import movieReducer from './slices/movie-slice';
+import showtimeReducer from "./slices/showtime-slice";
 
 const store = configureStore({
   reducer: {
-    movies: movieSlice.reducer,
+    movies: movieReducer,
+    showtimes: showtimeReducer,
   },
   devTools: true
 });
