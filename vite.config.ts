@@ -26,7 +26,7 @@ export default defineConfig(({ mode }) => ({
   // Optimize asset bundling
   build: {
     outDir: 'dist',
-    minify: 'terser',
+    minify: 'esbuild',
     sourcemap: true,
     rollupOptions: {
       output: {
