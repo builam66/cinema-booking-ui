@@ -1,5 +1,6 @@
-# cinema-booking-ui
+# Cinema Booking UI
 Cinema Booking App UI, includes searching movies, booking seat...
+- Demo: https://cinema-booking-ui.vercel.app
 
 ## Features
 
