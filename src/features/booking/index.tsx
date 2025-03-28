@@ -16,9 +16,12 @@ import { fetchMovieById } from '@/stores/slices/movie-slice';
 import AppLayout from '@/components/layout/app-layout';
 import SeatMap from './components/seat-map';
 import SeatLegend from './components/seat-legend';
+import BookingSummary from './components/booking-summary';
+import PaymentForm, { PaymentFormValues } from './components/payment-form';
 import { Film, Clock, MapPin, CreditCard, Info } from 'lucide-react';
 import { toast as sonnerToast } from 'sonner';
 import { getSeatsByShowtimeId } from '@/services/seat-service';
+import {BookingDetails} from "@/types/booking.ts";
 
 const SeatSelection = () => {
   const { showtimeId } = useParams<{ showtimeId: string }>();
@@ -34,6 +37,14 @@ const SeatSelection = () => {
   const { getShowtimeById } = useShowtime();
 
   const [activeTab, setActiveTab] = useState<string>('seats');
+  const [paymentValues, setPaymentValues] = useState<PaymentFormValues>({
+    fullName: '',
+    email: '',
+    phone: '',
+    cardNumber: '',
+    expiryDate: '',
+    cvv: ''
+  });
 
   useEffect(() => {
     if (showtimeId) {
@@ -82,6 +93,47 @@ const SeatSelection = () => {
       return;
     }
     setActiveTab('payment');
+  };
+
+  const handlePaymentSubmit = async (values: PaymentFormValues) => {
+    setPaymentValues(values);
+
+    if (!currentMovie || !currentShowtime || selectedSeats.length === 0) {
+      toast({
+        title: "Booking Error",
+        description: "Missing required booking information. Please try again.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const bookingDetails: BookingDetails = {
+      movie: currentMovie,
+      showtime: currentShowtime,
+      selectedSeats,
+      totalPrice,
+      paymentDetails: {
+        fullName: values.fullName,
+        email: values.email,
+        phone: values.phone,
+        cardNumber: values.cardNumber,
+        expiryDate: values.expiryDate,
+        cvv: values.cvv
+      }
+    };
+
+    const result = await submitBooking(bookingDetails);
+
+    if (result) {
+      const bookingData = {
+        ...bookingDetails,
+        bookingId: result.id,
+        bookingDate: result.bookingDate
+      };
+      sessionStorage.setItem('bookingData', JSON.stringify(bookingData));
+
+      navigate('/booking/confirmation');
+    }
   };
 
   const isLoading = showtimeLoading || movieLoading;
@@ -157,14 +209,14 @@ const SeatSelection = () => {
                       <div className="relative mb-8">
                         <motion.div
                           className="h-6 bg-primary/10 rounded-t-full mx-auto w-4/5 mb-2"
-                          initial={{ scale: 0.9, opacity: 0.5 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          transition={{
-                            duration: 1.5,
-                            repeat: Infinity,
-                            repeatType: "reverse",
-                            ease: "easeInOut"
-                          }}
+                          // initial={{ scale: 0.9, opacity: 0.5 }}
+                          // animate={{ scale: 1, opacity: 1 }}
+                          // transition={{
+                          //   duration: 1.5,
+                          //   repeat: Infinity,
+                          //   repeatType: "reverse",
+                          //   ease: "easeInOut"
+                          // }}
                         />
                         <p className="text-center text-xs text-muted-foreground">SCREEN</p>
                       </div>
@@ -185,7 +237,42 @@ const SeatSelection = () => {
                       </div>
                     </Card>
                   </TabsContent>
+
+                  <TabsContent value="payment">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <PaymentForm
+                        onPaymentComplete={handlePaymentSubmit}
+                        isLoading={paymentProcessing}
+                        initialValues={paymentValues}
+                        movie={currentMovie}
+                        showtime={currentShowtime}
+                        selectedSeats={selectedSeats}
+                        totalPrice={totalPrice}
+                        onCancel={() => setActiveTab('seats')}
+                      />
+                    </motion.div>
+                  </TabsContent>
                 </Tabs>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+              >
+                {currentMovie && currentShowtime && (
+                  <BookingSummary
+                    movie={currentMovie}
+                    showtime={currentShowtime}
+                    onProceedToPayment={handleContinueToPayment}
+                    selectedSeats={selectedSeats}
+                    totalPrice={totalPrice}
+                  />
+                )}
               </motion.div>
             </div>
           </>
