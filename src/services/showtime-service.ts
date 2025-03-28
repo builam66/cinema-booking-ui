@@ -1,5 +1,5 @@
 import axios from './axios';
-import { Showtime } from '@/types';
+import { Showtime } from '@/types/showtime';
 import {
   getShowtimesByMovieId as getMockShowtimesByMovieId,
   getShowtimeById as getMockShowtimeById,

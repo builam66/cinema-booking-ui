@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { Showtime } from '@/types';
+import { Showtime } from '@/types/showtime';
 import { getShowtimesByMovieId, getShowtimeById } from '@/services/showtime-service';
 
 interface ShowtimeState {

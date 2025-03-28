@@ -1,4 +1,6 @@
-import { Movie, Showtime } from '@/types';
+import { Movie } from '@/types/movie';
+import { Booking } from '@/types/booking';
+import { Showtime } from '@/types/showtime';
 
 export const mockMovies: Movie[] = [
   {
@@ -303,6 +305,8 @@ export const mockShowtimes: Showtime[] = [
   }
 ];
 
+export const mockBookings: Booking[] = [];
+
 export const getMovies = (): Movie[] => {
   return mockMovies;
 };
@@ -323,4 +327,17 @@ export const getShowtimesByMovieId = (movieId: string): Showtime[] => {
 
 export const getShowtimeById = (id: string): Showtime | undefined => {
   return mockShowtimes.find(showtime => showtime.id === id);
+};
+
+export const createBooking = (newBooking: Booking): Booking | undefined => {
+  mockBookings.push(newBooking);
+  return newBooking;
+};
+
+export const getUserBookings = (userId: string): Booking[] => {
+  return mockBookings.filter(booking => booking.userId === userId);
+};
+
+export const getBookingById = (bookingId: string): Booking | undefined => {
+  return mockBookings.find(booking => booking.id === bookingId);
 };
